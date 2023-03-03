@@ -1,7 +1,7 @@
 import functions from "firebase-functions";
 import express from "express";
 import cors from "cors";
-import { getAllDoc, postDoc } from "./src/functions.js";
+import { getByCollection, postDoc } from "./src/functions.js";
 
 const app = express();
 app.use(express.json());
@@ -13,7 +13,8 @@ app.get("/", (req, res) => {
 });
 
 // get: get all
-app.get("/brunch", getAllDoc);
+app.get("/collection/:occasion", getByCollection);
+app.get("/occasion/", getByCollection);
 
 // get: search
 // app.get('/search/:search', findDoc);

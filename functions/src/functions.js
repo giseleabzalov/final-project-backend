@@ -1,21 +1,39 @@
 import dbConnect from "./dbConnect.js";
-import { COLLECTION } from "./secrets.js";
+// import { COLLECTION } from "./secrets.js";
 
-const collectionName = COLLECTION;
+// const collectionName = COLLECTION;
 
 // get: all
-export async function getAllDoc(req, res) {
+// export async function getAllDoc(req, res) {
+//   const db = dbConnect();
+//   const collection = await db
+//     .collection()
+//     .find({})
+//     .limit(10)
+//     .toArray()
+//     .catch((err) => {
+//       res.status(500).send(err);
+//       return;
+//     });
+//   res.send(collection);
+// }
+
+// get by occasion
+
+export async function getByCollection(req, res) {
   const db = dbConnect();
-  const collection = await db
-    .collection(collectionName)
-    .find({})
-    .limit(10)
+  const { occasion } = req.params;
+  let filter = occasion ? { occasion: occasion } : {};
+
+  const occasionCocktails = await db
+    .collection("All_Cocktails")
+    .find({ occasion })
     .toArray()
     .catch((err) => {
       res.status(500).send(err);
       return;
     });
-  res.send(collection);
+  res.send(occasionCocktails);
 }
 
 // get: search
@@ -24,7 +42,7 @@ export async function getDoc(req, res) {
 
   const db = dbConnect();
   const collection = await db
-    .collection(collectionName)
+    .collection()
     .find(searchParam)
     .toArray()
     .catch((err) => {
@@ -40,7 +58,7 @@ export async function postDoc(req, res) {
   // { "id":"1", ""}
   const db = dbConnect();
   const collection = await db
-    .collection(collectionName) // "drinks"
+    .collection() // "drinks"
     .insertOne(newDoc)
     .catch((err) => {
       res.status(500).send(err);
