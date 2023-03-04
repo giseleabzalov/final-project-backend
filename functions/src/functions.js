@@ -1,27 +1,10 @@
 import dbConnect from "./dbConnect.js";
-// import { COLLECTION } from "./secrets.js";
+import { ObjectId } from "mongodb";
 
-// const collectionName = COLLECTION;
+const db = dbConnect();
 
-// get: all
-// export async function getAllDoc(req, res) {
-//   const db = dbConnect();
-//   const collection = await db
-//     .collection()
-//     .find({})
-//     .limit(10)
-//     .toArray()
-//     .catch((err) => {
-//       res.status(500).send(err);
-//       return;
-//     });
-//   res.send(collection);
-// }
-
-// get by occasion
-
+// get
 export async function getByCollection(req, res) {
-  const db = dbConnect();
   const { occasion } = req.params;
   let filter = occasion ? { occasion: occasion } : {};
 
@@ -36,48 +19,35 @@ export async function getByCollection(req, res) {
   res.send(occasionCocktails);
 }
 
-// get: search
-export async function getDoc(req, res) {
-  const searchParam = { id: Number(req.params.docId) };
-
-  const db = dbConnect();
-  const collection = await db
-    .collection()
-    .find(searchParam)
-    .toArray()
-    .catch((err) => {
-      res.status(500).send(err);
-      return;
-    });
-  res.send(collection);
-}
-
 // post
-export async function postDoc(req, res) {
-  const newDoc = req.body;
-  // { "id":"1", ""}
-  const db = dbConnect();
+export async function addCocktail(req, res) {
+  const newCocktail = req.body;
+
   const collection = await db
-    .collection() // "drinks"
-    .insertOne(newDoc)
+    .collection("All_Cocktails")
+    .insertOne(newCocktail)
     .catch((err) => {
       res.status(500).send(err);
       return;
     });
-  res.status(201).send({ message: "New Doc Inserted" });
+
+  res.status(201).send({ message: "New Cocktail Added" });
 }
+
+// update
 
 // delete
-export async function deleteDoc(req, res) {
-  const searchParam = { id: Number(req.params.docId) };
+export async function deleteCocktail(req, res) {
+  const cocktailId = { "_id": new ObjectId(req.params.cocktailId) };
 
-  const db = dbConnect();
-  const collection = await db
-    .collection(collectionName)
-    .deleteOne(searchParam)
+  const occasion = await db
+    .collection("All_Cocktails")
+    .deleteOne( cocktailId )
     .catch((err) => {
       res.status(500).send(err);
       return;
     });
-  res, send(collection);
+
+  res.send(occasion);
 }
+

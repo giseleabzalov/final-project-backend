@@ -1,7 +1,11 @@
 import functions from "firebase-functions";
 import express from "express";
 import cors from "cors";
-import { getByCollection, postDoc } from "./src/functions.js";
+import {
+  addCocktail,
+  getByCollection,
+  deleteCocktail,
+} from "./src/functions.js";
 
 const app = express();
 app.use(express.json());
@@ -16,15 +20,15 @@ app.get("/", (req, res) => {
 app.get("/collection/:occasion", getByCollection);
 app.get("/occasion/", getByCollection);
 
-// get: search
-// app.get('/search/:search', findDoc);
-
 // post: add
-app.post("/drinks", postDoc);
+app.post("/collection", addCocktail);
 
 // update
 
 // delete
-// app.delete('/delete/:docId', deleteDoc);
+app.delete("/delete/:cocktailId", deleteCocktail);
 
 export const api = functions.https.onRequest(app);
+
+// get: search
+// app.get('/search/:search', findDoc);
