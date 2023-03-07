@@ -3,6 +3,13 @@ import { ObjectId } from "mongodb";
 
 const db = dbConnect();
 
+// get All
+export async function getAllCocktails(req, res) {
+  const allCocktails = await db.collection("All_Cocktails").find().toArray();
+
+  res.send(allCocktails);
+}
+
 // get
 export async function getByCollection(req, res) {
   const { occasion } = req.params;
@@ -38,11 +45,11 @@ export async function addCocktail(req, res) {
 
 // delete
 export async function deleteCocktail(req, res) {
-  const cocktailId = { "_id": new ObjectId(req.params.cocktailId) };
+  const cocktailId = { _id: new ObjectId(req.params.cocktailId) };
 
   const occasion = await db
     .collection("All_Cocktails")
-    .deleteOne( cocktailId )
+    .deleteOne(cocktailId)
     .catch((err) => {
       res.status(500).send(err);
       return;
@@ -50,4 +57,3 @@ export async function deleteCocktail(req, res) {
 
   res.send(occasion);
 }
-

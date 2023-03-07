@@ -5,6 +5,7 @@ import {
   addCocktail,
   getByCollection,
   deleteCocktail,
+  getAllCocktails,
 } from "./src/functions.js";
 
 const app = express();
@@ -16,7 +17,11 @@ app.get("/", (req, res) => {
   res.send({ message: "Success" });
 });
 
-// get: get all
+// get: all
+
+app.get("/collection", getAllCocktails);
+
+// get: get by occasion
 app.get("/collection/:occasion", getByCollection);
 app.get("/occasion/", getByCollection);
 
