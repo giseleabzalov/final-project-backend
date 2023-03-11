@@ -31,7 +31,7 @@ app.post("/collection", addCocktail);
 // update
 
 // delete
-app.delete("/delete/:cocktailId", deleteCocktail);
+app.delete("/collection/:cocktailId", deleteCocktail);
 
 export const api = functions.https.onRequest(app);
 
